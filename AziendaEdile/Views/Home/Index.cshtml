@@ -1,0 +1,43 @@
+﻿@model List<AziendaEdile.Models.Dipendente>
+
+    @{
+        ViewBag.Title = "Home Page";
+    }
+
+    <main>
+        <main>
+            <h2>@ViewBag.Title</h2>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Indirizzo</th>
+                        <th>Codice fiscale</th>
+                        <th>Sposato</th>
+                        <th>Figli a carico</th>
+                        <th>Mansione</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dipendente in Model)
+                    {
+                        <tr>
+                            <td>@dipendente.IDDipendente</td>
+                            <td>@dipendente.NomeDipendente</td>
+                            <td>@dipendente.CognomeDipendente</td>
+                            <td>@dipendente.Indirizzo</td>
+                            <td>@dipendente.CodFiscale</td>
+                            <td>@dipendente.Sposato</td>
+                            <td>@dipendente.FigliCarico</td>
+                            <td>@dipendente.Mansione</td>
+                            <td>@Html.ActionLink("Dettagli", "About", "Home", new { id = dipendente.IDDipendente }, null)</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </main>
+    </main>
