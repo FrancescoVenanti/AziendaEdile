@@ -1,0 +1,30 @@
+﻿@model List<AziendaEdile.Models.Pagamenti>
+@{
+    ViewBag.Title = "Dettagli";
+}
+
+<h2>Dettagli</h2>
+<div>
+
+    <h4>Pagamenti</h4>
+    
+    <table class="table">
+        <tr>
+            <th>IdPagamento</th>
+            <th>Id Dipendente</th>
+            <th>Peridio Pagamento</th>
+            <th>Ammontare Pasamento</th>
+            <th>e' un acconto?'</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.IDPagamento</td>
+                <td>@item.IDDipendente</td>
+                <td>@item.PeriodoPagamento</td>
+                <td>@item.AmmontarePagamento</td>
+                <td>@item.isAcconto</td>
+            </tr>
+        }
+    </table>
+</div>

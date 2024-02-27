@@ -33,7 +33,12 @@
                             <td>@dipendente.Sposato</td>
                             <td>@dipendente.FigliCarico</td>
                             <td>@dipendente.Mansione</td>
-                            <td>@Html.ActionLink("Dettagli", "About", "Home", new { id = dipendente.IDDipendente }, null)</td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    @Html.ActionLink("Dettagli", "Dettagli", "Home", new { id = dipendente.IDDipendente }, null)
+                                    @Html.ActionLink("Aggiungi pagamento", "InserisciPagamento", "Home", new { id = dipendente.IDDipendente }, null)
+                                </div>
+                            </td>
 
                         </tr>
                     }

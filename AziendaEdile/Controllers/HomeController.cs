@@ -101,19 +101,90 @@ namespace AziendaEdile.Controllers
             return View();
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
         
+        public ActionResult Dettagli(int? id)
+            
+            {
+            // if int is null return to index
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            string connectionString = ConfigurationManager.ConnectionStrings["DbEdile"].ToString();
+            SqlConnection conn = new SqlConnection(connectionString);
+            List<Pagamenti> pagamenti = new List<Pagamenti>();
+            try
+            {
+                conn.Open();
+                string query = "SELECT * FROM Pagamenti WHERE IDDipendente = " +id;
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                
+                while (reader.Read())
+                {
+                    Pagamenti pagamento = new Pagamenti();
+                    pagamento.IDPagamento = Convert.ToInt32(reader["IDPagamento"]);
+                    pagamento.IDDipendente = Convert.ToInt32(reader["IDDipendente"]);
+                    pagamento.PeriodoPagamento = reader["PeriodoPagamento"].ToString();
+                    pagamento.AmmontarePagamento = Convert.ToDecimal(reader["AmmontarePagamento"]);
+                    pagamento.isAcconto = Convert.ToBoolean(reader["isAcconto"]);
+                    pagamenti.Add(pagamento);
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write($"Errore durante l'apertura della connessione: {ex.Message}");
+            }
+            finally
+            {
+                conn.Close();
+                
+            }
+            return View(pagamenti);
+
+        }
+        public ActionResult InserisciPagamento()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult InserisciPagamento(Pagamenti pagamenti, int? id)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DbEdile"].ToString();
+            SqlConnection conn = new SqlConnection(connectionString);
+
+            try
+            {
+                conn.Open();
+
+                string query =
+                    "INSERT INTO Pagamenti (IdDipendente, PeriodoPagamento,AmmontarePagamento,IsAcconto) " +
+                    "VALUES (@IdDipendente,@PeriodoPagamento,@AmmontarePagamento,@IsAcconto) ";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@IdDipendente", id);
+                cmd.Parameters.AddWithValue("@PeriodoPagamento", pagamenti.PeriodoPagamento);
+                cmd.Parameters.AddWithValue("@AmmontarePagamento", pagamenti.AmmontarePagamento);
+                cmd.Parameters.AddWithValue("@IsAcconto", pagamenti.isAcconto);
+
+                
+
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("aaaaaaaaaaaa" + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return View();
+        }
+
     }
 }
